@@ -3,31 +3,40 @@ import { gsap } from 'gsap';
 import { ArrowRight, Instagram, Linkedin, Mail, Menu, X } from 'lucide-react';
 import './App.css';
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
+const HubBar = () => {
+  const hubRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(hubRef.current,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, ease: "power4.out", delay: 1 }
+    );
+  }, []);
 
   return (
-    <nav className="navbar">
-      <div className="nav-container">
-        <div className="logo">
-          VARSHA <span>&</span> PRADEEP
+    <div className="hub-bar-wrapper" ref={hubRef}>
+      <div className="hub-bar glass">
+        <div className="hub-logo">
+          VARSHA & PRADEEP
         </div>
 
-        <div className={`nav-links ${isOpen ? 'active' : ''}`}>
-          <a href="#home">Home</a>
-          <a href="#projects">Projects</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+        <div className="hub-nav">
+          <a href="#home" className="hub-item active">
+            <span className="hub-icon">H</span>
+            <span className="hub-label">Home</span>
+          </a>
+          <a href="#projects" className="hub-item">
+            <span className="hub-icon">P</span>
+            <span className="hub-label">Projects</span>
+          </a>
+          <a href="#contact" className="hub-item">
+            <span className="hub-icon">C</span>
+            <span className="hub-label">Contact</span>
+          </a>
         </div>
 
-        <div className="nav-actions">
-          <button className="contact-btn">Get in Touch</button>
-          <button className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
       </div>
-    </nav>
+    </div>
   );
 };
 
@@ -53,30 +62,6 @@ const Hero = () => {
         <div className="overlay"></div>
       </div>
 
-      <div className="container hero-content">
-        <div className="hero-text">
-          <h1 ref={titleRef} className="reveal">
-            Architectural <br />
-            <span>Excellence</span> Defined.
-          </h1>
-          <p ref={subtitleRef} className="reveal">
-            Varsha & Pradeep specialize in creating timeless spaces that blend
-            modern innovation with functional elegance.
-          </p>
-          <div ref={ctaRef} className="hero-btns reveal">
-            <button className="primary-btn">
-              View Our Work <ArrowRight size={18} />
-            </button>
-            <button className="secondary-btn">Our Story</button>
-          </div>
-        </div>
-
-        <div className="hero-socials">
-          <a href="#"><Instagram size={20} /></a>
-          <a href="#"><Linkedin size={20} /></a>
-          <a href="#"><Mail size={20} /></a>
-        </div>
-      </div>
 
       <div className="scroll-indicator">
         <div className="mouse">
@@ -91,7 +76,7 @@ const Hero = () => {
 function App() {
   return (
     <div className="app">
-      <Navbar />
+      <HubBar />
       <main>
         <Hero />
       </main>
