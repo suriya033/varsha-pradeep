@@ -13,29 +13,27 @@ const projects = [
   {
     id: 1,
     title: "Great Lakes Institute",
-    description: "A beacon of management excellence. The Great Lakes Institute of Management project showcases our ability to create expansive, functional, and aesthetically pleasing educational environments.",
-    author: "N. Lakshmi Narayana",
+    description: "Having worked with them over the last five years their ability to understand the customer’s requirements, come up with refreshing ideas, creative solutions to problems, balance the omnipresent issue of costs and deliverables etc. singularly superlative.",
+    author: "-Late Dr. Bala Balachandran great lakes institute of management",
     image: greatLakesImg
   },
   {
     id: 2,
     title: "Modern Auditorium",
-    description: "Acoustic perfection meets modern design. This auditorium project focuses on state-of-the-art acoustics and a dynamic seating arrangement, providing an immersive experience.",
-    author: "John Doe",
+    description: "Your designs are simply wonderful and the workmanship that results from your guidance is of very high quality.",
     image: auditoriumImg
   },
   {
     id: 3,
     title: "The Hindu School",
-    description: "Preserving heritage through modern architecture. Our work for The Hindu School blends traditional architectural elements with modern educational requirements.",
-    author: "Jane Smith",
+    description: "We greatly appreciate his sense of commitment, the values he brings to bear on his entire team and on everyone associated with the project, the attention given to minor details while embarking on ambitiously creative ideas, the ease with which abstract concepts are translated to executable drawings and above all the humility that enables him to accept ideas and suggestions from all around him.",
+    author: "-Sri. Narayan Ramaswamy, HEO, Secretary",
     image: hinduSchoolImg
   },
   {
     id: 4,
     title: "Whirlpool Innovation",
-    description: "Sleek, industrial, and highly efficient. The Whirlpool project is a testament to our expertise in industrial design, focusing on efficiency and safety.",
-    author: "Robert Brown",
+    description: "Your seamless collaboration with the cross-functional team and all the related Whirlpool team members was truly impressive, your dedication to delivering top-notch results was evident throughout the project’s lifecycle.",
     image: whirlpoolImg
   }
 ];
@@ -80,7 +78,7 @@ const App = () => {
     <div className="app">
       {/* Fixed Header */}
       <header className="header">
-        <div className="logo">VARSHA & PRADEEP</div>
+        <div className="logo">VARSHA & PRADEEP ARCHITECTS</div>
 
         {/* Menu Toggle - Visible on all screens */}
         <button className="menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
