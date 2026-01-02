@@ -1,87 +1,106 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { ArrowRight, Instagram, Linkedin, Mail, Menu, X } from 'lucide-react';
+import { Menu, X, ArrowRight, ArrowLeft, Instagram, Linkedin, Mail } from 'lucide-react';
 import './App.css';
 
-const HubBar = () => {
-  const hubRef = useRef(null);
+const App = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentBg, setCurrentBg] = useState(0);
+  const bgImages = ['/hero-bg.png', '/hero-bg.jpg'];
+
+  const menuRef = useRef(null);
+  const bgRef = useRef(null);
+  const aboutRef = useRef(null);
 
   useEffect(() => {
-    gsap.fromTo(hubRef.current,
-      { y: -100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, ease: "power4.out", delay: 1 }
-    );
-  }, []);
+    if (isMenuOpen) {
+      gsap.to(menuRef.current, {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power4.out',
+        display: 'flex'
+      });
+    } else {
+      gsap.to(menuRef.current, {
+        x: '100%',
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power4.in',
+        onComplete: () => {
+          if (menuRef.current) menuRef.current.style.display = 'none';
+        }
+      });
+    }
+  }, [isMenuOpen]);
 
-  return (
-    <div className="hub-bar-wrapper" ref={hubRef}>
-      <div className="hub-bar glass">
-        <div className="hub-logo">
-          VARSHA & PRADEEP
-        </div>
+  const nextBg = () => {
+    setCurrentBg((prev) => (prev + 1) % bgImages.length);
+  };
 
-        <div className="hub-nav">
-          <a href="#home" className="hub-item active">
-            <span className="hub-icon">H</span>
-            <span className="hub-label">Home</span>
-          </a>
-          <a href="#projects" className="hub-item">
-            <span className="hub-icon">P</span>
-            <span className="hub-label">Projects</span>
-          </a>
-          <a href="#contact" className="hub-item">
-            <span className="hub-icon">C</span>
-            <span className="hub-label">Contact</span>
-          </a>
-        </div>
+  const prevBg = () => {
+    setCurrentBg((prev) => (prev - 1 + bgImages.length) % bgImages.length);
+  };
 
-      </div>
-    </div>
-  );
-};
-
-const Hero = () => {
-  const heroRef = useRef(null);
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
-  const ctaRef = useRef(null);
-  const imageRef = useRef(null);
-
-  useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1.5 } });
-
-    tl.to(imageRef.current, { scale: 1, opacity: 1, duration: 2 })
-      .to(titleRef.current, { y: 0, opacity: 1 }, "-=1.5")
-      .to(subtitleRef.current, { y: 0, opacity: 1 }, "-=1.3")
-      .to(ctaRef.current, { y: 0, opacity: 1 }, "-=1.1");
-  }, []);
-
-  return (
-    <section className="hero" ref={heroRef}>
-      <div className="hero-background" ref={imageRef} style={{ backgroundImage: 'url(/hero-bg.png)' }}>
-        <div className="overlay"></div>
-      </div>
-
-
-      <div className="scroll-indicator">
-        <div className="mouse">
-          <div className="wheel"></div>
-        </div>
-        <span>Scroll Down</span>
-      </div>
-    </section>
-  );
-};
-
-function App() {
   return (
     <div className="app">
-      <HubBar />
-      <main>
-        <Hero />
-      </main>
+      {/* Navigation */}
+      <nav className="navbar">
+        <div className="logo">
+          VARSHA <span>&</span> PRADEEP
+        </div>
+        <div className="nav-right">
+          <button className="styled-menu-btn" onClick={() => setIsMenuOpen(true)}>
+            <span className="btn-text"></span>
+            <div className="hamburger">
+              <span></span>
+              <span></span>
+            </div>
+          </button>
+        </div>
+      </nav>
+
+      {/* Full Screen Menu */}
+      <div className="menu-overlay" ref={menuRef}>
+        <button className="close-btn" onClick={() => setIsMenuOpen(false)}>
+          <X size={40} />
+        </button>
+        <div className="menu-links">
+          <a href="#home" onClick={() => setIsMenuOpen(false)}>Home</a>
+          <a href="#projects" onClick={() => setIsMenuOpen(false)}>Projects</a>
+          <a href="#contact" onClick={() => setIsMenuOpen(false)}>Contact</a>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="hero">
+        <div
+          className="hero-bg"
+          style={{ backgroundImage: `url(${bgImages[currentBg]})` }}
+          key={currentBg}
+        >
+          <div className="overlay"></div>
+        </div>
+
+        <div className="hero-content">
+          
+
+          {/* About Container */}
+          <div className="about-container reveal" ref={aboutRef}>
+            <h3>About the Project</h3>
+            <p>
+              This structure represents our commitment to sustainable and modern
+              architectural practices, blending form and function seamlessly.
+            </p>
+           
+          </div>
+        </div>
+
+      
+       
+      </section>
     </div>
   );
-}
+};
 
 export default App;
