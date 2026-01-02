@@ -37,6 +37,8 @@
   font-weight: 900;
   color: #fff;
   letter-spacing: 2px;
+  border-bottom: 3px solid #ba191b;
+  padding-bottom: 5px;
 }
 
 /* Menu Button - Visible Always */
@@ -126,7 +128,12 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: opacity 1.5s ease;
+  transition: opacity 1.5s ease, transform 6s ease;
+  transform: scale(1);
+}
+
+.hero-bg.active {
+  transform: scale(1.1);
 }
 
 .overlay {
@@ -148,7 +155,7 @@
   /* Transparent blur */
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #ba191b;
   padding: 3rem;
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);

@@ -12,27 +12,23 @@ import whirlpoolImg from './assets/whirlpool 01.png';
 const projects = [
   {
     id: 1,
-    title: "Great Lakes Institute",
     description: "Having worked with them over the last five years their ability to understand the customer’s requirements, come up with refreshing ideas, creative solutions to problems, balance the omnipresent issue of costs and deliverables etc. singularly superlative.",
     author: "-Late Dr. Bala Balachandran great lakes institute of management",
     image: greatLakesImg
   },
   {
     id: 2,
-    title: "Modern Auditorium",
     description: "Your designs are simply wonderful and the workmanship that results from your guidance is of very high quality.",
     image: auditoriumImg
   },
   {
     id: 3,
-    title: "The Hindu School",
     description: "We greatly appreciate his sense of commitment, the values he brings to bear on his entire team and on everyone associated with the project, the attention given to minor details while embarking on ambitiously creative ideas, the ease with which abstract concepts are translated to executable drawings and above all the humility that enables him to accept ideas and suggestions from all around him.",
     author: "-Sri. Narayan Ramaswamy, HEO, Secretary",
     image: hinduSchoolImg
   },
   {
     id: 4,
-    title: "Whirlpool Innovation",
     description: "Your seamless collaboration with the cross-functional team and all the related Whirlpool team members was truly impressive, your dedication to delivering top-notch results was evident throughout the project’s lifecycle.",
     image: whirlpoolImg
   }
@@ -115,7 +111,6 @@ const App = () => {
 
         {/* About / Content Overlay */}
         <div className="about-card">
-          <h2 ref={titleRef}>{currentProject.title}</h2>
           <p ref={descRef}>{currentProject.description}</p>
           <div className="author" ref={authorRef}>
             <span className="line"></span>
