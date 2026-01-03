@@ -42,15 +42,17 @@
 }
 
 /* Menu Button - Visible Always */
+/* Menu Button - Visible Always */
 .menu-btn {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.6rem 1.2rem;
-  border-radius: 100px;
+  border-radius: 50%;
   color: #fff;
   cursor: pointer;
   transition: var(--transition);
@@ -58,15 +60,10 @@
   /* Ensure it's above the overlay */
 }
 
-.menu-text {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-
 .menu-btn:hover {
   background: #fff;
   color: #000;
+  transform: rotate(90deg);
 }
 
 /* Full Screen Menu Overlay */
