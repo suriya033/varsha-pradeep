@@ -25,13 +25,13 @@ const projects = [
   {
     id: 2,
     description: "Your designs are simply wonderful and the workmanship that results from your guidance is of very high quality.",
-    author: "Late Dr. Bala Balachandran great lakes institute of management",
+    author: "Dr.ashok jhunjhunwala professor, IIT-Madras",
     image: auditoriumfinalImg,
   },
   {
     id: 3,
     description: "You have shown excellent management skills, ensuring quality and timeliness. It is to be noted that you have pointed to opportunities for cost savings. This has allowed ending project on budget.",
-    author: "Late Dr. Bala Balachandran great lakes institute of management",
+    author: "Pau Vila cases ph.D",
     image: bdplfinalImg,
   },
   {
@@ -49,7 +49,7 @@ const projects = [
   {
     id: 6,
     description: "Your seamless collaboration with the cross-functional team and all the related Whirlpool team members was truly impressive, your dedication to delivering top-notch results was evident throughout the project’s lifecycle.",
-    author: "Late Dr. Bala Balachandran great lakes institute of management",
+    author: "Rajesh Sharma",
     image: whirpoolImg,
   },
 ];
@@ -162,14 +162,12 @@ const App = () => {
 
         {/* About / Content Overlay */}
         <div className="about-card fade-in delay-1">
-          <p>{currentProject.description}</p>
-
+          <p key={`desc-${currentIndex}`} className="text-reveal">{currentProject.description}</p>
 
           {currentProject.author && (
-            <div className="author">
-
+            <div className="author" key={`author-${currentIndex}`}>
               <span className="line"></span>
-              <span className="name">{currentProject.author}</span>
+              <span className="name text-reveal">{currentProject.author}</span>
             </div>
           )}
         </div>

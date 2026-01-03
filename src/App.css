@@ -68,6 +68,23 @@
   transition-delay: 0.3s;
 }
 
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.text-reveal {
+  animation: textReveal 1s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+
 
 /* Header */
 .header {
@@ -94,7 +111,7 @@
   position: absolute;
   top: 1.5rem;
   left: 4rem;
-  font-family: var(--font-logo);
+  font-family: 'Times New Roman', Times, serif;
   font-size: 2rem;
   font-weight: 900;
   color: #fff;
@@ -197,7 +214,7 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: opacity 1.5s ease, transform 6s ease;
+  transition: opacity 5s ease, transform 6s ease;
   transform: scale(1);
 }
 
@@ -233,7 +250,7 @@
 /* About Card */
 .about-card {
   position: absolute;
-  bottom: 15%;
+  top: 15%;
   right: 10%;
   width: 450px;
   background: rgba(255, 255, 255, 0.1);
