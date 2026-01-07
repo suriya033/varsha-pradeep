@@ -19,7 +19,7 @@ const projects = [
   {
     id: 1,
     description: "Having worked with them over the last five years their ability to understand the customer’s requirements, come up with refreshing ideas, creative solutions to problems, balance the omnipresent issue of costs and deliverables etc. singularly superlative.",
-    author: "-Late Dr. Bala Balachandran great lakes institute of management",
+    author: "Late Dr. Bala Balachandran great lakes institute of management",
     image: greatLakesImg,
   },
   {
@@ -37,7 +37,7 @@ const projects = [
   {
     id: 4,
     description: "Your creative ideas, contrarian views and diligence helped us to create a world class facility. I would gladly recommend you for architectural and interior works, based on your values, business integrity and above all your creative instincts.",
-    author: "N.lakshni Narayana president and ceo",
+    author: "N.lakshmi Narayana president and ceo",
     image: cognizantinteriorImg,
   },
   {
