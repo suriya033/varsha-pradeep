@@ -441,3 +441,45 @@
     font-size: 1rem;
   }
 }
+/* Slide Animation Overrides */
+.hero-bg {
+  transition: transform 1s ease-in-out !important;
+  will-change: transform;
+  opacity: 1 !important;
+}
+
+.hero-bg.slide-active {
+  transform: translateX(0) !important;
+  z-index: 2;
+}
+
+.hero-bg.slide-prev {
+  transform: translateX(-100%) !important;
+  z-index: 1;
+}
+
+.hero-bg.slide-next {
+  transform: translateX(100%) !important;
+  z-index: 0;
+  transition: none !important;
+}
+
+
+.admin-login-link {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 10px 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 2rem;
+  transition: var(--transition);
+}
+
+.admin-login-link:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
