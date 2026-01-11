@@ -72,6 +72,7 @@ const AdminDashboard = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
     useEffect(() => {
         const isAdmin = localStorage.getItem('isAdmin');
@@ -86,7 +87,7 @@ const AdminDashboard = () => {
     const fetchContent = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:5000/api/home-content');
+            const response = await axios.get(`${API_URL}/api/home-content`);
             setContent(response.data);
         } catch (error) {
             console.error('Error fetching content:', error);
@@ -97,7 +98,7 @@ const AdminDashboard = () => {
 
     const fetchProjects = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/projects');
+            const response = await axios.get(`${API_URL}/api/projects`);
             setProjects(response.data);
         } catch (error) {
             console.error('Error fetching projects:', error);
@@ -128,7 +129,7 @@ const AdminDashboard = () => {
                     console.warn("Could not convert image to base64, sending as is", e);
                 }
 
-                await axios.post('http://localhost:5000/api/home-content', {
+                await axios.post(`${API_URL}/api/home-content`, {
                     ...item,
                     image: imageToSend
                 });
@@ -237,10 +238,10 @@ const AdminDashboard = () => {
         setLoading(true);
         try {
             if (editingId) {
-                await axios.put(`http://localhost:5000/api/home-content/${editingId}`, homeFormData);
+                await axios.put(`${API_URL}/api/home-content/${editingId}`, homeFormData);
                 alert('Slide updated successfully!');
             } else {
-                await axios.post('http://localhost:5000/api/home-content', homeFormData);
+                await axios.post(`${API_URL}/api/home-content`, homeFormData);
                 alert('Slide added successfully!');
             }
             resetForm();
@@ -267,10 +268,10 @@ const AdminDashboard = () => {
         setLoading(true);
         try {
             if (editingId) {
-                await axios.put(`http://localhost:5000/api/projects/${editingId}`, projectFormData);
+                await axios.put(`${API_URL}/api/projects/${editingId}`, projectFormData);
                 alert('Project updated successfully!');
             } else {
-                await axios.post('http://localhost:5000/api/projects', projectFormData);
+                await axios.post(`${API_URL}/api/projects`, projectFormData);
                 alert('Project added successfully!');
             }
             resetForm();
@@ -314,7 +315,7 @@ const AdminDashboard = () => {
             try {
                 const endpoint = type === 'home' ? 'home-content' : 'projects';
                 // Note: Delete route for projects might need to be verified/added
-                await axios.delete(`http://localhost:5000/api/${endpoint}/${id}`);
+                await axios.delete(`${API_URL}/api/${endpoint}/${id}`);
                 if (type === 'home') fetchContent();
                 else fetchProjects();
             } catch (error) {

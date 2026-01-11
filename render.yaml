@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: varsha-pradeep-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: server
+    envVars:
+      - key: MONGODB_URI
+        sync: false # You will set this in the Render Dashboard
+      - key: NODE_VERSION
+        value: 18.0.0

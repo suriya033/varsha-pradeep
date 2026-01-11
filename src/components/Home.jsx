@@ -29,10 +29,12 @@ const Home = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
     useEffect(() => {
         const fetchHomeContent = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/home-content');
+                const response = await axios.get(`${API_URL}/api/home-content`);
                 if (response.data && response.data.length > 0) {
                     setSlides(response.data);
                 }
@@ -43,7 +45,7 @@ const Home = () => {
 
         const fetchProjects = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/projects');
+                const response = await axios.get(`${API_URL}/api/projects`);
                 setProjects(response.data);
             } catch (error) {
                 console.error('Error fetching projects:', error);
@@ -52,7 +54,7 @@ const Home = () => {
 
         fetchHomeContent();
         fetchProjects();
-    }, []);
+    }, [API_URL]);
 
     // Auto-slide logic
     useEffect(() => {
@@ -102,7 +104,7 @@ const Home = () => {
                 <div className="header-empty"></div>
 
                 <div className="header-actions">
-                   
+
                     {/* Menu Toggle - Visible on all screens */}
                     <button className="menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
