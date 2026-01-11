@@ -154,30 +154,74 @@ const AdminDashboard = () => {
         setProjectFormData({ ...projectFormData, [name]: value });
     };
 
-    const handleHomeImageUpload = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setHomeFormData({ ...homeFormData, image: reader.result });
-        };
-        if (file) {
+    // Helper to compress image before upload
+    const compressImage = (file, maxWidth = 1920, quality = 0.7) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
             reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    // Calculate new dimensions
+                    if (width > maxWidth) {
+                        height = (maxWidth / width) * height;
+                        width = maxWidth;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Convert to base64 with quality compression
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                    resolve(compressedBase64);
+                };
+                img.onerror = reject;
+            };
+            reader.onerror = reject;
+        });
+    };
+
+    const handleHomeImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setLoading(true);
+            try {
+                const compressedImage = await compressImage(file);
+                setHomeFormData({ ...homeFormData, image: compressedImage });
+            } catch (error) {
+                console.error('Error compressing image:', error);
+                alert('Failed to process image. Please try a different one.');
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
-    const handleProjectImagesUpload = (e) => {
+    const handleProjectImagesUpload = async (e) => {
         const files = Array.from(e.target.files);
-
-        files.forEach(file => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProjectFormData(prev => ({
-                    ...prev,
-                    images: [...prev.images, reader.result]
-                }));
-            };
-            reader.readAsDataURL(file);
-        });
+        setLoading(true);
+        try {
+            const compressedImages = await Promise.all(
+                files.map(file => compressImage(file))
+            );
+            setProjectFormData(prev => ({
+                ...prev,
+                images: [...prev.images, ...compressedImages]
+            }));
+        } catch (error) {
+            console.error('Error compressing images:', error);
+            alert('Failed to process some images. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const removeProjectImage = (index) => {

@@ -102,12 +102,7 @@ const Home = () => {
                 <div className="header-empty"></div>
 
                 <div className="header-actions">
-                    <button
-                        className="admin-header-link"
-                        onClick={() => navigate('/admin')}
-                    >
-                        Admin
-                    </button>
+                   
                     {/* Menu Toggle - Visible on all screens */}
                     <button className="menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -121,8 +116,6 @@ const Home = () => {
                 <div className="menu-overlay">
                     <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
                     <a href="#projects" onClick={() => setIsMobileMenuOpen(false)}>Projects</a>
-                    <a href="#about" onClick={() => setIsMobileMenuOpen(false)}>About</a>
-                    <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
                     <button
                         className="admin-login-link"
                         onClick={() => {

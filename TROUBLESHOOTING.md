@@ -40,13 +40,13 @@ node server.js
 ---
 
 ### 3. Image Size Too Large
-**Problem:** Base64 encoded images exceed the server limit.
+**Problem:** Base64 encoded images exceed the server limit or cause browser performance issues.
 
 **Solution:**
-- The server now accepts up to 100MB
-- Try compressing your images before upload
-- Recommended image size: < 5MB per image
-- Use tools like TinyPNG or compress images before uploading
+- **Automatic Compression:** The Admin Dashboard now automatically compresses and resizes large images before upload.
+- The server accepts up to 100MB, but the dashboard will scale images down to a maximum width of 1920px for optimal performance.
+- You can now select large high-resolution photos directly; the system will handle the optimization for you.
+- **Tip:** If you still encounter issues with extremely large batches of images, try uploading them in smaller groups.
 
 ---
 
