@@ -441,6 +441,7 @@
     font-size: 1rem;
   }
 }
+
 /* Slide Animation Overrides */
 .hero-bg {
   transition: transform 1s ease-in-out !important;
@@ -483,3 +484,144 @@
   border-color: var(--accent-color);
 }
 
+/* Projects Section */
+.projects-section {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f7;
+  padding: 8rem 4rem;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: var(--font-logo);
+  font-size: 3rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin-bottom: 4rem;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 3rem;
+}
+
+.project-card {
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.project-image {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.1);
+}
+
+.project-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.project-category {
+  background: var(--accent-color);
+  color: white;
+  padding: 0.4rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 2px;
+}
+
+.project-info {
+  padding: 2rem;
+}
+
+.project-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+.project-info p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.empty-msg {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem;
+  color: #999;
+  font-size: 1.2rem;
+}
+
+/* Contact Section */
+.contact-section {
+  width: 100%;
+  min-height: 50vh;
+  background-color: #1a1a1a;
+  padding: 8rem 4rem;
+  color: white;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.contact-section .section-title {
+  color: white;
+}
+
+.contact-content {
+  max-width: 600px;
+}
+
+.contact-content p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+
+  .projects-section,
+  .contact-section {
+    padding: 6rem 2rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+}

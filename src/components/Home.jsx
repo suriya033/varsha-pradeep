@@ -23,33 +23,45 @@ const initialProjects = [
 ];
 
 const Home = () => {
-    const [projects, setProjects] = useState(initialProjects);
+    const [slides, setSlides] = useState(initialProjects);
+    const [projects, setProjects] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchContent = async () => {
+        const fetchHomeContent = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/home-content');
                 if (response.data && response.data.length > 0) {
-                    setProjects(response.data);
+                    setSlides(response.data);
                 }
             } catch (error) {
                 console.error('Error fetching home content:', error);
             }
         };
-        fetchContent();
+
+        const fetchProjects = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/projects');
+                setProjects(response.data);
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            }
+        };
+
+        fetchHomeContent();
+        fetchProjects();
     }, []);
 
     // Auto-slide logic
     useEffect(() => {
-        if (projects.length === 0) return;
+        if (slides.length === 0) return;
         const interval = setInterval(() => {
             nextSlide();
         }, 5000); // 5 seconds interval
         return () => clearInterval(interval);
-    }, [currentIndex, projects]);
+    }, [currentIndex, slides]);
 
     // Scroll Animation Logic (Intersection Observer)
     useEffect(() => {
@@ -77,10 +89,10 @@ const Home = () => {
     }, []);
 
     const nextSlide = () => {
-        setCurrentIndex((prev) => (prev + 1) % projects.length);
+        setCurrentIndex((prev) => (prev + 1) % slides.length);
     };
 
-    const currentProject = projects[currentIndex] || {};
+    const currentSlide = slides[currentIndex] || {};
 
     return (
         <div className="app">
@@ -101,6 +113,7 @@ const Home = () => {
                 <div className="menu-overlay">
                     <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
                     <a href="#projects" onClick={() => setIsMobileMenuOpen(false)}>Projects</a>
+                    <a href="#about" onClick={() => setIsMobileMenuOpen(false)}>About</a>
                     <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
                     <button
                         className="admin-login-link"
@@ -120,20 +133,20 @@ const Home = () => {
 
 
                 {/* Background Images - Stacked for smooth transition */}
-                {projects.map((project, index) => {
+                {slides.map((slide, index) => {
                     let positionClass = 'slide-next';
                     if (index === currentIndex) {
                         positionClass = 'slide-active';
-                    } else if (index === (currentIndex - 1 + projects.length) % projects.length) {
+                    } else if (index === (currentIndex - 1 + slides.length) % slides.length) {
                         positionClass = 'slide-prev';
                     }
 
                     return (
                         <div
-                            key={project._id}
+                            key={slide._id || index}
                             className={`hero-bg ${positionClass}`}
                             style={{
-                                backgroundImage: `url(${project.image})`,
+                                backgroundImage: `url(${slide.image})`,
                             }}
                         >
                             <div className="overlay"></div>
@@ -149,14 +162,41 @@ const Home = () => {
 
                 {/* About / Content Overlay */}
                 <div className="about-card fade-in delay-1">
-                    <p key={`desc-${currentIndex}`} className="text-reveal">{currentProject.description}</p>
+                    <p key={`desc-${currentIndex}`} className="text-reveal">{currentSlide.description}</p>
 
-                    {currentProject.author && (
+                    {currentSlide.author && (
                         <div className="author" key={`author-${currentIndex}`}>
                             <span className="line"></span>
-                            <span className="name text-reveal">{currentProject.author}</span>
+                            <span className="name text-reveal">{currentSlide.author}</span>
                         </div>
                     )}
+                </div>
+            </section>
+
+            {/* Projects Section */}
+            <section id="projects" className="projects-section">
+                <div className="section-container">
+                    <h2 className="section-title reveal">Our Projects</h2>
+                    <div className="projects-grid">
+                        {projects.length === 0 ? (
+                            <p className="empty-msg reveal">No projects to display yet.</p>
+                        ) : (
+                            projects.map((project, index) => (
+                                <div key={project._id} className="project-card reveal" style={{ transitionDelay: `${index * 0.1}s` }}>
+                                    <div className="project-image">
+                                        <img src={project.images[0]} alt={project.title} />
+                                        <div className="project-overlay">
+                                            <span className="project-category">{project.category}</span>
+                                        </div>
+                                    </div>
+                                    <div className="project-info">
+                                        <h3>{project.title}</h3>
+                                        <p>{project.location} {project.year ? `| ${project.year}` : ''}</p>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
                 </div>
             </section>
 
@@ -177,6 +217,17 @@ const Home = () => {
                             <p className="slide-up delay-3">We believe in a collaboration effort between all stakeholders client, architect, PMC and contractor to where each partakes in the joy of creation infusing the building with a positive energy ultimately benefitting the end users.</p>
                             <p className="slide-up delay-3">We are cutting edge looks like BIM, AI on a need basis Autocad, Sketchup to ensure seamless transition from concept to execution.</p>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Contact Section Placeholder */}
+            <section id="contact" className="contact-section">
+                <div className="section-container">
+                    <h2 className="section-title reveal">Contact Us</h2>
+                    <div className="contact-content reveal">
+                        <p>Get in touch with us for your next project.</p>
+                        {/* Add contact info here */}
                     </div>
                 </div>
             </section>

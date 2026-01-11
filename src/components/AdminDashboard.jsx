@@ -223,12 +223,8 @@ const AdminDashboard = () => {
         setLoading(true);
         try {
             if (editingId) {
-                // Note: We need to implement PUT in backend for projects if not exists
-                // For now, let's try to POST (create new) if edit fails or just console log
-                // Actually, let's just do POST for now as "Add Project" was the main request
-                // But "uploading project" implies adding.
-                await axios.post('http://localhost:5000/api/projects', projectFormData);
-                alert('Project added successfully!');
+                await axios.put(`http://localhost:5000/api/projects/${editingId}`, projectFormData);
+                alert('Project updated successfully!');
             } else {
                 await axios.post('http://localhost:5000/api/projects', projectFormData);
                 alert('Project added successfully!');
