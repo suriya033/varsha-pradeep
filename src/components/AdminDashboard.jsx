@@ -250,7 +250,13 @@ const AdminDashboard = () => {
         } catch (error) {
             console.error('Error saving content:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred';
-            alert(`Error saving content: ${errorMessage}\n\nTarget URL: ${API_URL}\n\nPlease check:\n1. Server is running\n2. MongoDB is connected\n3. Image size is not too large`);
+
+            let helpfulTip = "";
+            if (window.location.hostname !== 'localhost' && API_URL.includes('localhost')) {
+                helpfulTip = "\n\n🚨 CRITICAL: You are on a live site but the Target URL is still 'localhost'. You MUST set the VITE_API_URL in Vercel Settings.";
+            }
+
+            alert(`Error saving content: ${errorMessage}\n\nTarget URL: ${API_URL}${helpfulTip}\n\nPlease check:\n1. Server is running\n2. MongoDB is connected\n3. Image size is not too large`);
         } finally {
             setLoading(false);
         }
@@ -280,7 +286,13 @@ const AdminDashboard = () => {
         } catch (error) {
             console.error('Error saving project:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred';
-            alert(`Error saving project: ${errorMessage}\n\nTarget URL: ${API_URL}\n\nPlease check:\n1. Server is running\n2. MongoDB is connected\n3. All required fields are filled\n4. Images are not too large`);
+
+            let helpfulTip = "";
+            if (window.location.hostname !== 'localhost' && API_URL.includes('localhost')) {
+                helpfulTip = "\n\n🚨 CRITICAL: You are on a live site but the Target URL is still 'localhost'. You MUST set the VITE_API_URL in Vercel Settings.";
+            }
+
+            alert(`Error saving project: ${errorMessage}\n\nTarget URL: ${API_URL}${helpfulTip}\n\nPlease check:\n1. Server is running\n2. MongoDB is connected\n3. All required fields are filled\n4. Images are not too large`);
         } finally {
             setLoading(false);
         }
@@ -350,8 +362,15 @@ const AdminDashboard = () => {
             <nav className="admin-nav">
                 <div className="nav-brand">
                     <h1>Admin Dashboard</h1>
+                    <div className={`connection-status ${loading ? 'checking' : 'connected'}`}>
+                        <span className="status-dot"></span>
+                        {loading ? 'Syncing...' : 'System Online'}
+                    </div>
                 </div>
                 <div className="nav-actions">
+                    <button onClick={() => navigate('/')} className="btn btn-text">
+                        View Site
+                    </button>
                     <button onClick={handleLogout} className="btn btn-outline">
                         <LogOut size={18} /> Logout
                     </button>
