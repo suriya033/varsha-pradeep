@@ -11,7 +11,7 @@ import bdplfinalImg from '../assets/bdpl final.png';
 import cognizantinteriorImg from '../assets/cognizant interior.png';
 import hinduschoolImg from '../assets/hindu school.png';
 import whirpoolImg from '../assets/whirpool.png';
-import aboutStudioImg from '../assets/about-studio.png';
+import aboutStudioImg from '../assets/about-studio.webp';
 
 const initialProjects = [
     {
@@ -181,32 +181,6 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Projects Section */}
-            <section id="projects" className="projects-section">
-                <div className="section-container">
-                    <h2 className="section-title reveal">Our Projects</h2>
-                    <div className="projects-grid">
-                        {projects.length === 0 ? (
-                            <p className="empty-msg reveal">No projects to display yet.</p>
-                        ) : (
-                            projects.map((project, index) => (
-                                <div key={project._id} className="project-card reveal" style={{ transitionDelay: `${index * 0.1}s` }}>
-                                    <div className="project-image">
-                                        <img src={project.images[0]} alt={project.title} />
-                                        <div className="project-overlay">
-                                            <span className="project-category">{project.category}</span>
-                                        </div>
-                                    </div>
-                                    <div className="project-info">
-                                        <h3>{project.title}</h3>
-                                        <p>{project.location} {project.year ? `| ${project.year}` : ''}</p>
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </div>
-            </section>
 
             {/* About Section */}
             <section id="about" className="about-section">
@@ -229,53 +203,16 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Contact Section */}
-            <section id="contact" className="contact-section">
-                <div className="section-container">
-                    <h2 className="section-title reveal">Contact Us</h2>
-                    <div className="contact-grid">
-                        <div className="contact-info reveal">
-                            <div className="contact-item">
-                                <h3>Location</h3>
-                                <p>Chennai, India</p>
-                            </div>
-                            <div className="contact-item">
-                                <h3>Email</h3>
-                                <p>contact@varshapradeep.com</p>
-                            </div>
-                            <div className="contact-item">
-                                <h3>Phone</h3>
-                                <p>+91 98765 43210</p>
-                            </div>
-                        </div>
-                        <div className="contact-form reveal delay-1">
-                            <p>We are always open to new collaborations and projects.</p>
-                            <button className="btn-primary" style={{ marginTop: '1rem', padding: '1rem 2rem' }}>Send a Message</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Footer */}
-            <footer className="footer">
-                <div className="footer-content">
-                    <div className="footer-logo">VARSHA & PRADEEP</div>
-                    <div className="footer-links">
-                        <a href="#home">Home</a>
-                        <a href="#projects">Projects</a>
-                        <a href="#about">About</a>
-                        <a href="#contact">Contact</a>
-                    </div>
-                    <div className="footer-bottom">
-                        <p>&copy; {new Date().getFullYear()} Varsha & Pradeep Architects. All rights reserved.</p>
-                        <button
-                            className="admin-footer-link"
-                            onClick={() => navigate('/admin')}
-                        >
-                            Admin Login
-                        </button>
-                    </div>
-                </div>
+            {/* Minimal Footer */}
+            <footer className="footer" style={{ padding: '4rem 2rem', textAlign: 'center', background: '#0a0a0a', color: 'white' }}>
+                <p style={{ opacity: 0.5, fontSize: '0.9rem' }}>&copy; {new Date().getFullYear()} Varsha & Pradeep Architects. All rights reserved.</p>
+                <button
+                    className="admin-footer-link"
+                    onClick={() => navigate('/admin')}
+                    style={{ marginTop: '1rem' }}
+                >
+                    Admin Login
+                </button>
             </footer>
 
         </div>
