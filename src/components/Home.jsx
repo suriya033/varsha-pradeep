@@ -101,10 +101,18 @@ const Home = () => {
             <header className="header">
                 <div className="header-empty"></div>
 
-                {/* Menu Toggle - Visible on all screens */}
-                <button className="menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                <div className="header-actions">
+                    <button
+                        className="admin-header-link"
+                        onClick={() => navigate('/admin')}
+                    >
+                        Admin
+                    </button>
+                    {/* Menu Toggle - Visible on all screens */}
+                    <button className="menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
             </header>
 
 
@@ -221,16 +229,54 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Contact Section Placeholder */}
+            {/* Contact Section */}
             <section id="contact" className="contact-section">
                 <div className="section-container">
                     <h2 className="section-title reveal">Contact Us</h2>
-                    <div className="contact-content reveal">
-                        <p>Get in touch with us for your next project.</p>
-                        {/* Add contact info here */}
+                    <div className="contact-grid">
+                        <div className="contact-info reveal">
+                            <div className="contact-item">
+                                <h3>Location</h3>
+                                <p>Chennai, India</p>
+                            </div>
+                            <div className="contact-item">
+                                <h3>Email</h3>
+                                <p>contact@varshapradeep.com</p>
+                            </div>
+                            <div className="contact-item">
+                                <h3>Phone</h3>
+                                <p>+91 98765 43210</p>
+                            </div>
+                        </div>
+                        <div className="contact-form reveal delay-1">
+                            <p>We are always open to new collaborations and projects.</p>
+                            <button className="btn-primary" style={{ marginTop: '1rem', padding: '1rem 2rem' }}>Send a Message</button>
+                        </div>
                     </div>
                 </div>
             </section>
+
+            {/* Footer */}
+            <footer className="footer">
+                <div className="footer-content">
+                    <div className="footer-logo">VARSHA & PRADEEP</div>
+                    <div className="footer-links">
+                        <a href="#home">Home</a>
+                        <a href="#projects">Projects</a>
+                        <a href="#about">About</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                    <div className="footer-bottom">
+                        <p>&copy; {new Date().getFullYear()} Varsha & Pradeep Architects. All rights reserved.</p>
+                        <button
+                            className="admin-footer-link"
+                            onClick={() => navigate('/admin')}
+                        >
+                            Admin Login
+                        </button>
+                    </div>
+                </div>
+            </footer>
 
         </div>
     );
