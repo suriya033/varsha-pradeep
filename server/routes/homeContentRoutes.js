@@ -15,16 +15,24 @@ router.get('/', async (req, res) => {
 
 // Create new content
 router.post('/', async (req, res) => {
-    const content = new HomeContent({
-        description: req.body.description,
-        author: req.body.author,
-        image: req.body.image
-    });
-
     try {
+        // Validate required fields
+        if (!req.body.description || !req.body.author || !req.body.image) {
+            return res.status(400).json({
+                message: 'Missing required fields. Please provide description, author, and image.'
+            });
+        }
+
+        const content = new HomeContent({
+            description: req.body.description,
+            author: req.body.author,
+            image: req.body.image
+        });
+
         const newContent = await content.save();
         res.status(201).json(newContent);
     } catch (err) {
+        console.error('Error creating home content:', err);
         res.status(400).json({ message: err.message });
     }
 });

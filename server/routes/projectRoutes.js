@@ -15,11 +15,25 @@ router.get('/', async (req, res) => {
 
 // Create a project
 router.post('/', async (req, res) => {
-    const project = new Project(req.body);
     try {
+        // Validate required fields
+        if (!req.body.title || !req.body.description || !req.body.category) {
+            return res.status(400).json({
+                message: 'Missing required fields. Please provide title, description, and category.'
+            });
+        }
+
+        if (!req.body.images || req.body.images.length === 0) {
+            return res.status(400).json({
+                message: 'At least one image is required for the project.'
+            });
+        }
+
+        const project = new Project(req.body);
         const newProject = await project.save();
         res.status(201).json(newProject);
     } catch (err) {
+        console.error('Error creating project:', err);
         res.status(400).json({ message: err.message });
     }
 });

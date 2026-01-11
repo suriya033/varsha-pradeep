@@ -194,15 +194,18 @@ const AdminDashboard = () => {
         try {
             if (editingId) {
                 await axios.put(`http://localhost:5000/api/home-content/${editingId}`, homeFormData);
+                alert('Slide updated successfully!');
             } else {
                 await axios.post('http://localhost:5000/api/home-content', homeFormData);
+                alert('Slide added successfully!');
             }
             resetForm();
             fetchContent();
             setIsFormOpen(false);
         } catch (error) {
             console.error('Error saving content:', error);
-            alert('Error saving content');
+            const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred';
+            alert(`Error saving content: ${errorMessage}\n\nPlease check:\n1. Server is running on port 5000\n2. MongoDB is connected\n3. Image size is not too large`);
         } finally {
             setLoading(false);
         }
@@ -210,30 +213,33 @@ const AdminDashboard = () => {
 
     const handleProjectSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate that at least one image is uploaded
+        if (projectFormData.images.length === 0) {
+            alert('Please upload at least one image for the project');
+            return;
+        }
+
         setLoading(true);
         try {
-            // For projects, we currently only have create (POST) in the routes provided earlier?
-            // Let's assume PUT exists or we add it. If not, we might need to add it to backend.
-            // Based on previous turn, only GET and POST were created for projects.
-            // I should probably stick to POST for now or update backend. 
-            // Let's try POST for new and warn for edit if not supported, but usually we want edit.
-            // I'll assume standard REST: POST /api/projects, PUT /api/projects/:id
-
             if (editingId) {
                 // Note: We need to implement PUT in backend for projects if not exists
                 // For now, let's try to POST (create new) if edit fails or just console log
                 // Actually, let's just do POST for now as "Add Project" was the main request
                 // But "uploading project" implies adding.
                 await axios.post('http://localhost:5000/api/projects', projectFormData);
+                alert('Project added successfully!');
             } else {
                 await axios.post('http://localhost:5000/api/projects', projectFormData);
+                alert('Project added successfully!');
             }
             resetForm();
             fetchProjects();
             setIsFormOpen(false);
         } catch (error) {
             console.error('Error saving project:', error);
-            alert('Error saving project');
+            const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred';
+            alert(`Error saving project: ${errorMessage}\n\nPlease check:\n1. Server is running on port 5000\n2. MongoDB is connected\n3. All required fields are filled\n4. Images are not too large`);
         } finally {
             setLoading(false);
         }
