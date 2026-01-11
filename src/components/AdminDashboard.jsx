@@ -250,7 +250,7 @@ const AdminDashboard = () => {
         } catch (error) {
             console.error('Error saving content:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred';
-            alert(`Error saving content: ${errorMessage}\n\nPlease check:\n1. Server is running on port 5000\n2. MongoDB is connected\n3. Image size is not too large`);
+            alert(`Error saving content: ${errorMessage}\n\nTarget URL: ${API_URL}\n\nPlease check:\n1. Server is running\n2. MongoDB is connected\n3. Image size is not too large`);
         } finally {
             setLoading(false);
         }
@@ -280,7 +280,7 @@ const AdminDashboard = () => {
         } catch (error) {
             console.error('Error saving project:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred';
-            alert(`Error saving project: ${errorMessage}\n\nPlease check:\n1. Server is running on port 5000\n2. MongoDB is connected\n3. All required fields are filled\n4. Images are not too large`);
+            alert(`Error saving project: ${errorMessage}\n\nTarget URL: ${API_URL}\n\nPlease check:\n1. Server is running\n2. MongoDB is connected\n3. All required fields are filled\n4. Images are not too large`);
         } finally {
             setLoading(false);
         }
