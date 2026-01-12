@@ -528,3 +528,33 @@
 .remove-img-btn:hover {
     background: red;
 }
+
+/* Quill Editor Styles */
+.quill-editor {
+    background: white;
+    border-radius: var(--radius);
+}
+
+.quill-editor .ql-toolbar {
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+    border-color: var(--admin-border);
+}
+
+.quill-editor .ql-container {
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    border-color: var(--admin-border);
+    min-height: 150px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+}
+
+.quill-editor .ql-editor {
+    min-height: 150px;
+}
+
+.quill-editor .ql-editor.ql-blank::before {
+    color: #999;
+    font-style: normal;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import 'react-quill-new/dist/quill.snow.css';
 import '../App.css';
 
 // Import assets (keep for fallback or initial load if DB is empty)
@@ -165,7 +166,12 @@ const Home = () => {
 
                 {/* About / Content Overlay */}
                 <div className="about-card fade-in delay-1">
-                    <p key={`desc-${currentIndex}`} className="text-reveal">{currentSlide.description}</p>
+                    <div
+                        key={`desc-${currentIndex}`}
+                        className="text-reveal ql-editor"
+                        style={{ padding: 0, minHeight: 'auto' }}
+                        dangerouslySetInnerHTML={{ __html: currentSlide.description }}
+                    />
 
                     {currentSlide.author && (
                         <div className="author" key={`author-${currentIndex}`}>

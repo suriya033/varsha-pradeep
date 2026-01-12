@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Edit2, Trash2, LogOut, Save, X, RefreshCw, Image as ImageIcon } from 'lucide-react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import './AdminDashboard.css';
 
 // Import assets for seeding
@@ -43,6 +45,24 @@ const initialData = [
         author: "Rajesh Sharma",
         image: whirpoolImg,
     },
+];
+
+const quillModules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, false] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['clean']
+    ],
+};
+
+const quillFormats = [
+    'header', 'size',
+    'bold', 'italic', 'underline', 'strike',
+    'color', 'background',
+    'list', 'bullet',
 ];
 
 const AdminDashboard = () => {
@@ -235,6 +255,13 @@ const AdminDashboard = () => {
     // Submit Handlers
     const handleHomeSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate description (Quill empty state is often <p><br></p>)
+        if (!homeFormData.description || homeFormData.description === '<p><br></p>') {
+            alert('Please enter a description');
+            return;
+        }
+
         setLoading(true);
         try {
             if (editingId) {
@@ -264,6 +291,12 @@ const AdminDashboard = () => {
 
     const handleProjectSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate description
+        if (!projectFormData.description || projectFormData.description === '<p><br></p>') {
+            alert('Please enter a project description');
+            return;
+        }
 
         // Validate that at least one image is uploaded
         if (projectFormData.images.length === 0) {
@@ -424,13 +457,14 @@ const AdminDashboard = () => {
                                 <form onSubmit={handleHomeSubmit} className="admin-form">
                                     <div className="form-group">
                                         <label>Description </label>
-                                        <textarea
-                                            name="description"
+                                        <ReactQuill
+                                            theme="snow"
                                             value={homeFormData.description}
-                                            onChange={handleHomeInputChange}
-                                            required
+                                            onChange={(value) => setHomeFormData({ ...homeFormData, description: value })}
+                                            modules={quillModules}
+                                            formats={quillFormats}
                                             placeholder="Enter the testimonial text..."
-                                            rows={4}
+                                            className="quill-editor"
                                         />
                                     </div>
                                     <div className="form-group">
@@ -504,12 +538,14 @@ const AdminDashboard = () => {
                                     </div>
                                     <div className="form-group">
                                         <label>Description</label>
-                                        <textarea
-                                            name="description"
+                                        <ReactQuill
+                                            theme="snow"
                                             value={projectFormData.description}
-                                            onChange={handleProjectInputChange}
-                                            required
-                                            rows={4}
+                                            onChange={(value) => setProjectFormData({ ...projectFormData, description: value })}
+                                            modules={quillModules}
+                                            formats={quillFormats}
+                                            placeholder="Enter project description..."
+                                            className="quill-editor"
                                         />
                                     </div>
                                     <div className="form-row">
@@ -613,7 +649,11 @@ const AdminDashboard = () => {
                                     </div>
                                     <div className="slide-details">
                                         <p className="slide-author">{item.author}</p>
-                                        <p className="slide-desc">{item.description}</p>
+                                        <div
+                                            className="slide-desc ql-editor"
+                                            style={{ padding: 0, minHeight: 'auto', maxHeight: '4.5em', overflow: 'hidden' }}
+                                            dangerouslySetInnerHTML={{ __html: item.description }}
+                                        />
                                     </div>
                                 </div>
                             ))
@@ -643,7 +683,11 @@ const AdminDashboard = () => {
                                     <div className="slide-details">
                                         <p className="slide-author">{item.title}</p>
                                         <span className="badge">{item.category}</span>
-                                        <p className="slide-desc" style={{ marginTop: '0.5rem' }}>{item.description}</p>
+                                        <div
+                                            className="slide-desc ql-editor"
+                                            style={{ marginTop: '0.5rem', padding: 0, minHeight: 'auto', maxHeight: '4.5em', overflow: 'hidden' }}
+                                            dangerouslySetInnerHTML={{ __html: item.description }}
+                                        />
                                     </div>
                                 </div>
                             ))
