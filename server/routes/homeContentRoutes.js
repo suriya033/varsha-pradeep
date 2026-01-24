@@ -6,7 +6,7 @@ const router = express.Router();
 // Get all content
 router.get('/', async (req, res) => {
     try {
-        const content = await HomeContent.find();
+        const content = await HomeContent.find().lean();
         res.json(content);
     } catch (err) {
         res.status(500).json({ message: err.message });

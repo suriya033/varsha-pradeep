@@ -299,6 +299,7 @@
 
 .about-card p {
   font-size: 1rem;
+
   color: #f0f0f0;
   /* Light text */
   line-height: 1.5;
@@ -306,7 +307,7 @@
 }
 
 .author {
-  display: flex;
+ 
   align-items: center;
   gap: 0.5rem;
 }
@@ -353,7 +354,7 @@
 .about-section {
   width: 100%;
   min-height: 100vh;
-  background-color:white;
+  background-color: white;
   padding: 8rem 4rem;
   display: flex;
   align-items: center;
@@ -380,7 +381,7 @@
   width: 400px;
   height: 500px;
   overflow: hidden;
-  margin-left: 3rem; 
+  margin-left: 3rem;
   border-radius: 4px;
   box-shadow: 20px 20px 0px var(--accent-color);
 }
@@ -774,3 +775,9 @@
     text-align: center;
   }
 }
+
+
+
+
+
+

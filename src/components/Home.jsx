@@ -28,33 +28,46 @@ const Home = () => {
     const [projects, setProjects] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
     useEffect(() => {
-        const fetchHomeContent = async () => {
+        // Load from cache first for instant display
+        const cachedSlides = localStorage.getItem('home_slides');
+        const cachedProjects = localStorage.getItem('home_projects');
+
+        if (cachedSlides || cachedProjects) {
+            if (cachedSlides) setSlides(JSON.parse(cachedSlides));
+            if (cachedProjects) setProjects(JSON.parse(cachedProjects));
+            setLoading(false);
+        }
+
+        const fetchData = async () => {
             try {
-                const response = await axios.get(`${API_URL}/api/home-content`);
-                if (response.data && response.data.length > 0) {
-                    setSlides(response.data);
+                const [homeRes, projectsRes] = await Promise.all([
+                    axios.get(`${API_URL}/api/home-content`),
+                    axios.get(`${API_URL}/api/projects`)
+                ]);
+
+                if (homeRes.data && homeRes.data.length > 0) {
+                    setSlides(homeRes.data);
+                    localStorage.setItem('home_slides', JSON.stringify(homeRes.data));
+                }
+
+                if (projectsRes.data) {
+                    setProjects(projectsRes.data);
+                    localStorage.setItem('home_projects', JSON.stringify(projectsRes.data));
                 }
             } catch (error) {
-                console.error('Error fetching home content:', error);
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
-        const fetchProjects = async () => {
-            try {
-                const response = await axios.get(`${API_URL}/api/projects`);
-                setProjects(response.data);
-            } catch (error) {
-                console.error('Error fetching projects:', error);
-            }
-        };
-
-        fetchHomeContent();
-        fetchProjects();
+        fetchData();
     }, [API_URL]);
 
     // Auto-slide logic
@@ -158,10 +171,7 @@ const Home = () => {
                     );
                 })}
 
-                {/* Hero Title */}
-                <div className="hero-title-container">
-                    <h1 className="hero-testimonials-title reveal">Our Testimonials</h1>
-                </div>
+
 
 
                 {/* About / Content Overlay */}
@@ -170,7 +180,9 @@ const Home = () => {
                         key={`desc-${currentIndex}`}
                         className="text-reveal ql-editor"
                         style={{ padding: 0, minHeight: 'auto' }}
-                        dangerouslySetInnerHTML={{ __html: currentSlide.description }}
+                        dangerouslySetInnerHTML={{
+                            __html: (currentSlide.description || '').replace(/\u00a0/g, ' ').replace(/&nbsp;/g, ' ')
+                        }}
                     />
 
                     {currentSlide.author && (
