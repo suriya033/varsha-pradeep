@@ -47,6 +47,15 @@ const initialData = [
     },
 ];
 
+const defaultAboutContent = [
+    { content: "A team of <strong>sharing a common value system</strong> and shared environment and resources.", order: 1 },
+    { content: "We love our work and strive towards creating a beautiful living environment where people can work in joy.", order: 2 },
+    { content: "We do this by listening. <strong>Listening hard and with sensibility</strong>.", order: 3 },
+    { content: "We value our <strong>clients as the principal visionary and with our experience add value</strong> to evolve and evolved it. Vision that form the basis of our design.", order: 4 },
+    { content: "We believe in a <strong>collaboration effort between all stakeholders</strong> client, architect, PMC and contractor to where each partakes in the joy of creation infusing the building with a positive energy ultimately benefitting the end users.", order: 5 },
+    { content: "We are <strong>cutting edge looks</strong> like BIM, AI on a need basis Autocad, Sketchup to ensure <strong>seamless transition from concept to execution</strong>.", order: 6 }
+];
+
 const quillModules = {
     toolbar: [
         [{ 'header': [1, 2, 3, false] }],
@@ -69,6 +78,7 @@ const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('home'); // 'home' or 'projects'
     const [content, setContent] = useState([]);
     const [projects, setProjects] = useState([]);
+    const [aboutContent, setAboutContent] = useState([]);
 
     // Home Content Form State
     const [homeFormData, setHomeFormData] = useState({
@@ -88,6 +98,12 @@ const AdminDashboard = () => {
         images: [] // Array of base64 strings
     });
 
+    // About Form State
+    const [aboutFormData, setAboutFormData] = useState({
+        content: '',
+        order: 0
+    });
+
     const [editingId, setEditingId] = useState(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -102,6 +118,7 @@ const AdminDashboard = () => {
         }
         fetchContent();
         fetchProjects();
+        fetchAboutContent();
     }, [navigate]);
 
     const fetchContent = async () => {
@@ -122,6 +139,15 @@ const AdminDashboard = () => {
             setProjects(response.data);
         } catch (error) {
             console.error('Error fetching projects:', error);
+        }
+    };
+
+    const fetchAboutContent = async () => {
+        try {
+            const response = await axios.get(`${API_URL}/api/about-content`);
+            setAboutContent(response.data);
+        } catch (error) {
+            console.error('Error fetching about content:', error);
         }
     };
 
@@ -164,6 +190,23 @@ const AdminDashboard = () => {
         }
     };
 
+    const handleSeedAboutData = async () => {
+        if (!window.confirm('This will add the default about content to the database. Continue?')) return;
+        setLoading(true);
+        try {
+            for (const item of defaultAboutContent) {
+                await axios.post(`${API_URL}/api/about-content`, item);
+            }
+            fetchAboutContent();
+            alert('Default about content loaded successfully!');
+        } catch (error) {
+            console.error('Error seeding about data:', error);
+            alert('Failed to load default about data.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Input Handlers
     const handleHomeInputChange = (e) => {
         const { name, value } = e.target;
@@ -173,6 +216,11 @@ const AdminDashboard = () => {
     const handleProjectInputChange = (e) => {
         const { name, value } = e.target;
         setProjectFormData({ ...projectFormData, [name]: value });
+    };
+
+    const handleAboutInputChange = (e) => {
+        const { name, value } = e.target;
+        setAboutFormData({ ...aboutFormData, [name]: value });
     };
 
     // Helper to compress image before upload
@@ -288,7 +336,6 @@ const AdminDashboard = () => {
             setLoading(false);
         }
     };
-
     const handleProjectSubmit = async (e) => {
         e.preventDefault();
 
@@ -331,6 +378,34 @@ const AdminDashboard = () => {
         }
     };
 
+    const handleAboutSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!aboutFormData.content) {
+            alert('Please enter content');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            if (editingId) {
+                await axios.put(`${API_URL}/api/about-content/${editingId}`, aboutFormData);
+                alert('About content updated successfully!');
+            } else {
+                await axios.post(`${API_URL}/api/about-content`, aboutFormData);
+                alert('About content added successfully!');
+            }
+            resetForm();
+            fetchAboutContent();
+            setIsFormOpen(false);
+        } catch (error) {
+            console.error('Error saving about content:', error);
+            alert('Failed to save about content.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleEdit = (item, type) => {
         if (type === 'home') {
             setHomeFormData({
@@ -338,8 +413,7 @@ const AdminDashboard = () => {
                 author: item.author,
                 image: item.image
             });
-        } else {
-            // Project edit
+        } else if (type === 'projects') {
             setProjectFormData({
                 title: item.title,
                 description: item.description,
@@ -348,6 +422,11 @@ const AdminDashboard = () => {
                 year: item.year || new Date().getFullYear(),
                 client: item.client || '',
                 images: item.images || []
+            });
+        } else if (type === 'about') {
+            setAboutFormData({
+                content: item.content,
+                order: item.order || 0
             });
         }
         setEditingId(item._id);
@@ -358,11 +437,11 @@ const AdminDashboard = () => {
         if (window.confirm('Are you sure you want to delete this item?')) {
             setLoading(true);
             try {
-                const endpoint = type === 'home' ? 'home-content' : 'projects';
-                // Note: Delete route for projects might need to be verified/added
+                const endpoint = type === 'home' ? 'home-content' : (type === 'projects' ? 'projects' : 'about-content');
                 await axios.delete(`${API_URL}/api/${endpoint}/${id}`);
                 if (type === 'home') fetchContent();
-                else fetchProjects();
+                else if (type === 'projects') fetchProjects();
+                else fetchAboutContent();
             } catch (error) {
                 console.error('Error deleting content:', error);
             } finally {
@@ -381,6 +460,10 @@ const AdminDashboard = () => {
             year: new Date().getFullYear(),
             client: '',
             images: []
+        });
+        setAboutFormData({
+            content: '',
+            order: 0
         });
         setEditingId(null);
     };
@@ -424,19 +507,52 @@ const AdminDashboard = () => {
                     >
                         Projects
                     </button>
+                    <button
+                        className={`tab-btn ${activeTab === 'about' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('about')}
+                    >
+                        About Us
+                    </button>
                 </div>
 
                 <div className="content-header">
-                    <h2>{activeTab === 'home' ? 'Manage Home Slides' : 'Manage Projects'}</h2>
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => {
-                            resetForm();
-                            setIsFormOpen(true);
-                        }}
-                    >
-                        <Plus size={18} /> {activeTab === 'home' ? 'Add New Slide' : 'Add New Project'}
-                    </button>
+                    <h2>
+                        {activeTab === 'home' ? 'Manage Home Slides' :
+                            activeTab === 'projects' ? 'Manage Projects' :
+                                'Manage About Content'}
+                    </h2>
+                    <div className="header-btns">
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                                resetForm();
+                                setIsFormOpen(true);
+                            }}
+                        >
+                            <Plus size={18} />
+                            {activeTab === 'home' ? 'Add New Slide' :
+                                activeTab === 'projects' ? 'Add New Project' :
+                                    'Add About Paragraph'}
+                        </button>
+                        {activeTab === 'about' && aboutContent.length === 0 && (
+                            <button
+                                className="btn btn-secondary"
+                                onClick={handleSeedAboutData}
+                                style={{ marginLeft: '1rem' }}
+                            >
+                                <RefreshCw size={18} /> Load Defaults
+                            </button>
+                        )}
+                        {activeTab === 'home' && content.length === 0 && (
+                            <button
+                                className="btn btn-secondary"
+                                onClick={handleSeedData}
+                                style={{ marginLeft: '1rem' }}
+                            >
+                                <RefreshCw size={18} /> Load Defaults
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 {/* Modal / Form Overlay */}
@@ -445,7 +561,7 @@ const AdminDashboard = () => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h3>
-                                    {editingId ? 'Edit' : 'Add New'} {activeTab === 'home' ? 'Slide' : 'Project'}
+                                    {editingId ? 'Edit' : 'Add New'} {activeTab === 'home' ? 'Slide' : activeTab === 'projects' ? 'Project' : 'About Paragraph'}
                                 </h3>
                                 <button className="close-btn" onClick={() => setIsFormOpen(false)}>
                                     <X size={24} />
@@ -508,7 +624,7 @@ const AdminDashboard = () => {
                                         </button>
                                     </div>
                                 </form>
-                            ) : (
+                            ) : activeTab === 'projects' ? (
                                 /* PROJECT FORM */
                                 <form onSubmit={handleProjectSubmit} className="admin-form">
                                     <div className="form-group">
@@ -619,6 +735,39 @@ const AdminDashboard = () => {
                                         </button>
                                     </div>
                                 </form>
+                            ) : (
+                                /* ABOUT FORM */
+                                <form onSubmit={handleAboutSubmit} className="admin-form">
+                                    <div className="form-group">
+                                        <label>Paragraph Content</label>
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={aboutFormData.content}
+                                            onChange={(value) => setAboutFormData({ ...aboutFormData, content: value })}
+                                            modules={quillModules}
+                                            formats={quillFormats}
+                                            placeholder="Enter about paragraph content..."
+                                            className="quill-editor"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Display Order</label>
+                                        <input
+                                            type="number"
+                                            name="order"
+                                            value={aboutFormData.order}
+                                            onChange={handleAboutInputChange}
+                                        />
+                                    </div>
+                                    <div className="form-actions">
+                                        <button type="button" className="btn btn-text" onClick={() => setIsFormOpen(false)}>
+                                            Cancel
+                                        </button>
+                                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                                            <Save size={18} /> {editingId ? 'Update Paragraph' : 'Save Paragraph'}
+                                        </button>
+                                    </div>
+                                </form>
                             )}
                         </div>
                     </div>
@@ -658,7 +807,7 @@ const AdminDashboard = () => {
                                 </div>
                             ))
                         )
-                    ) : (
+                    ) : activeTab === 'projects' ? (
                         /* PROJECTS GRID */
                         projects.length === 0 && !loading ? (
                             <div className="empty-state">
@@ -687,6 +836,34 @@ const AdminDashboard = () => {
                                             className="slide-desc ql-editor"
                                             style={{ marginTop: '0.5rem', padding: 0, minHeight: 'auto', maxHeight: '4.5em', overflow: 'hidden' }}
                                             dangerouslySetInnerHTML={{ __html: item.description }}
+                                        />
+                                    </div>
+                                </div>
+                            ))
+                        )
+                    ) : (
+                        /* ABOUT GRID */
+                        aboutContent.length === 0 && !loading ? (
+                            <div className="empty-state">
+                                <p>No about content found. Add your first paragraph!</p>
+                            </div>
+                        ) : (
+                            aboutContent.map((item) => (
+                                <div key={item._id} className="slide-card about-card-admin">
+                                    <div className="slide-details">
+                                        <div className="slide-actions-top">
+                                            <button onClick={() => handleEdit(item, 'about')} className="action-btn edit" title="Edit">
+                                                <Edit2 size={18} />
+                                            </button>
+                                            <button onClick={() => handleDelete(item._id, 'about')} className="action-btn delete" title="Delete">
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </div>
+                                        <p className="order-badge">Order: {item.order}</p>
+                                        <div
+                                            className="about-text-preview ql-editor"
+                                            style={{ padding: 0, minHeight: 'auto' }}
+                                            dangerouslySetInnerHTML={{ __html: item.content }}
                                         />
                                     </div>
                                 </div>

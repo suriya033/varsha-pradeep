@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'react-quill-new/dist/quill.snow.css';
@@ -7,11 +7,6 @@ import '../App.css';
 
 // Import assets (keep for fallback or initial load if DB is empty)
 import greatLakesImg from '../assets/great lakes.png';
-import auditoriumfinalImg from '../assets/auditorium final.png';
-import bdplfinalImg from '../assets/bdpl final.png';
-import cognizantinteriorImg from '../assets/cognizant interior.png';
-import hinduschoolImg from '../assets/hindu school.png';
-import whirpoolImg from '../assets/whirpool.png';
 import aboutStudioImg from '../assets/about-studio.webp';
 
 const initialProjects = [
@@ -26,6 +21,7 @@ const initialProjects = [
 const Home = () => {
     const [slides, setSlides] = useState(initialProjects);
     const [projects, setProjects] = useState([]);
+    const [aboutContent, setAboutContent] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -37,18 +33,21 @@ const Home = () => {
         // Load from cache first for instant display
         const cachedSlides = localStorage.getItem('home_slides');
         const cachedProjects = localStorage.getItem('home_projects');
+        const cachedAbout = localStorage.getItem('home_about');
 
-        if (cachedSlides || cachedProjects) {
+        if (cachedSlides || cachedProjects || cachedAbout) {
             if (cachedSlides) setSlides(JSON.parse(cachedSlides));
             if (cachedProjects) setProjects(JSON.parse(cachedProjects));
+            if (cachedAbout) setAboutContent(JSON.parse(cachedAbout));
             setLoading(false);
         }
 
         const fetchData = async () => {
             try {
-                const [homeRes, projectsRes] = await Promise.all([
+                const [homeRes, projectsRes, aboutRes] = await Promise.all([
                     axios.get(`${API_URL}/api/home-content`),
-                    axios.get(`${API_URL}/api/projects`)
+                    axios.get(`${API_URL}/api/projects`),
+                    axios.get(`${API_URL}/api/about-content`)
                 ]);
 
                 if (homeRes.data && homeRes.data.length > 0) {
@@ -59,6 +58,11 @@ const Home = () => {
                 if (projectsRes.data) {
                     setProjects(projectsRes.data);
                     localStorage.setItem('home_projects', JSON.stringify(projectsRes.data));
+                }
+
+                if (aboutRes.data) {
+                    setAboutContent(aboutRes.data);
+                    localStorage.setItem('home_about', JSON.stringify(aboutRes.data));
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -75,7 +79,7 @@ const Home = () => {
         if (slides.length === 0) return;
         const interval = setInterval(() => {
             nextSlide();
-        }, 5000); // 5 seconds interval
+        }, 15000); // 15 seconds interval
         return () => clearInterval(interval);
     }, [currentIndex, slides]);
 
@@ -108,6 +112,10 @@ const Home = () => {
         setCurrentIndex((prev) => (prev + 1) % slides.length);
     };
 
+    const prevSlide = () => {
+        setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    };
+
     const currentSlide = slides[currentIndex] || {};
 
     return (
@@ -118,6 +126,9 @@ const Home = () => {
                 <div className="header-empty"></div>
 
                 <div className="header-actions">
+                   
+                   { /*<button
+                        className="admin-header-link"onClick={() => navigate('/admin')}>Admin Login</button>*/}
 
                     {/* Menu Toggle - Visible on all screens */}
                     <button className="menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -171,8 +182,17 @@ const Home = () => {
                     );
                 })}
 
-
-
+                {/* Slider Navigation Buttons */}
+                {slides.length > 1 && (
+                    <>
+                        <button className="slider-btn prev" onClick={prevSlide} aria-label="Previous slide">
+                            <ChevronLeft size={32} />
+                        </button>
+                        <button className="slider-btn next" onClick={nextSlide} aria-label="Next slide">
+                            <ChevronRight size={32} />
+                        </button>
+                    </>
+                )}
 
                 {/* About / Content Overlay */}
                 <div className="about-card fade-in delay-1">
@@ -205,16 +225,31 @@ const Home = () => {
                         <h2 className="about-title reveal">About Us</h2>
                         <div className="about-divider reveal delay-1"></div>
                         <div className="about-description">
-                            <p className="slide-up delay-2">A team of passionate architects sharing a common value system and shared environment and resources.</p>
-                            <p className="slide-up delay-2">We love our work and strive towards creating a beautiful living environment where people can work in joy.</p>
-                            <p className="slide-up delay-3">We do this by listening. Listening hard and with sensibility.</p>
-                            <p className="slide-up delay-3">We value our clients as the principal visionary and with our experience add value to evolve and evolved it. Vision that form the basis of our design.</p>
-                            <p className="slide-up delay-3">We believe in a collaboration effort between all stakeholders client, architect, PMC and contractor to where each partakes in the joy of creation infusing the building with a positive energy ultimately benefitting the end users.</p>
-                            <p className="slide-up delay-3">We are cutting edge looks like BIM, AI on a need basis Autocad, Sketchup to ensure seamless transition from concept to execution.</p>
+                            {aboutContent.length > 0 ? (
+                                aboutContent.map((item, index) => (
+                                    <div
+                                        key={item._id || index}
+                                        className={`slide-up delay-${(index % 3) + 2} ql-editor`}
+                                        style={{ padding: 0, minHeight: 'auto', marginBottom: '1.5rem' }}
+                                        dangerouslySetInnerHTML={{ __html: item.content }}
+                                    />
+                                ))
+                            ) : (
+                                <>
+                                    <p className="slide-up delay-2">A team of <strong>sharing a common value system</strong> and shared environment and resources.</p>
+                                    <p className="slide-up delay-2">We love our work and strive towards creating a beautiful living environment where people can work in joy.</p>
+                                    <p className="slide-up delay-3">We do this by listening. <strong>Listening hard and with sensibility</strong>.</p>
+                                    <p className="slide-up delay-3">We value our <strong>clients as the principal visionary and with our experience add value</strong> to evolve and evolved it. Vision that form the basis of our design.</p>
+                                    <p className="slide-up delay-3">We believe in a <strong>collaboration effort between all stakeholders</strong> client, architect, PMC and contractor to where each partakes in the joy of creation infusing the building with a positive energy ultimately benefitting the end users.</p>
+                                    <p className="slide-up delay-3">We are <strong>cutting edge looks</strong> like BIM, AI on a need basis Autocad, Sketchup to ensure <strong>seamless transition from concept to execution</strong>.</p>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
             </section>
+
+           
 
             {/* Minimal Footer */}
             <footer className="footer" style={{ padding: '4rem 2rem', textAlign: 'center', background: '#0a0a0a', color: 'white' }}>

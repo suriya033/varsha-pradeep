@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 import projectRoutes from './routes/projectRoutes.js';
 import homeContentRoutes from './routes/homeContentRoutes.js';
+import aboutContentRoutes from './routes/aboutContentRoutes.js';
 
 import compression from 'compression';
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 // Routes
 app.use('/api/projects', projectRoutes);
 app.use('/api/home-content', homeContentRoutes);
+app.use('/api/about-content', aboutContentRoutes);
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/varsha-pradeep';
