@@ -84,6 +84,8 @@ const AdminDashboard = () => {
     const [homeFormData, setHomeFormData] = useState({
         description: '',
         author: '',
+        authorNative: '',
+        authorStudy: '',
         image: ''
     });
 
@@ -411,6 +413,8 @@ const AdminDashboard = () => {
             setHomeFormData({
                 description: item.description,
                 author: item.author,
+                authorNative: item.authorNative || '',
+                authorStudy: item.authorStudy || '',
                 image: item.image
             });
         } else if (type === 'projects') {
@@ -451,7 +455,7 @@ const AdminDashboard = () => {
     };
 
     const resetForm = () => {
-        setHomeFormData({ description: '', author: '', image: '' });
+        setHomeFormData({ description: '', author: '', authorNative: '', authorStudy: '', image: '' });
         setProjectFormData({
             title: '',
             description: '',
@@ -592,6 +596,26 @@ const AdminDashboard = () => {
                                             onChange={handleHomeInputChange}
                                             required
                                             placeholder="Enter name"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>.</label>
+                                        <input
+                                            type="text"
+                                            name="authorNative"
+                                            value={homeFormData.authorNative}
+                                            onChange={handleHomeInputChange}
+                                            placeholder="Enter details"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>.</label>
+                                        <input
+                                            type="text"
+                                            name="authorStudy"
+                                            value={homeFormData.authorStudy}
+                                            onChange={handleHomeInputChange}
+                                            placeholder="Enter  details"
                                         />
                                     </div>
                                     <div className="form-group">

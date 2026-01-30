@@ -12,8 +12,8 @@ import aboutStudioImg from '../assets/about-studio.webp';
 const initialProjects = [
     {
         _id: '1',
-        description: "Having worked with them over the last five years their ability to understand the customer’s requirements, come up with refreshing ideas, creative solutions to problems, balance the omnipresent issue of costs and deliverables etc. singularly superlative.",
-        author: "Late Dr. Bala Balachandran great lakes institute of management",
+        description: "I having worked with them over the last five years their ability to understand the customer’s requirements, come up with refreshing ideas, creative solutions to problems, balance the omnipresent issue of costs and deliverables etc. singularly superlative.",
+        author: "Late Dr. Bala. V. Chandran founder and dean of great lakes institute of management",
         image: greatLakesImg,
     },
 ];
@@ -126,8 +126,8 @@ const Home = () => {
                 <div className="header-empty"></div>
 
                 <div className="header-actions">
-                   
-                   { /*<button
+
+                    { /*<button
                         className="admin-header-link"onClick={() => navigate('/admin')}>Admin Login</button>*/}
 
                     {/* Menu Toggle - Visible on all screens */}
@@ -208,7 +208,19 @@ const Home = () => {
                     {currentSlide.author && (
                         <div className="author" key={`author-${currentIndex}`}>
                             <span className="line"></span>
-                            <span className="name text-reveal">{currentSlide.author}</span>
+                            <div className="author-details" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                <span className="name text-reveal">{currentSlide.author}</span>
+                                {currentSlide.authorNative && (
+                                    <span className="text-reveal" style={{ fontSize: '0.8rem', color: 'hsla(0, 20%, 95%, 0.99)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                        {currentSlide.authorNative}
+                                    </span>
+                                )}
+                                {currentSlide.authorStudy && (
+                                    <span className="text-reveal" style={{ fontSize: '0.75rem', color: 'hsla(0, 100%, 100%, 0.94)' }}>
+                                        {currentSlide.authorStudy}
+                                    </span>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>
@@ -236,12 +248,12 @@ const Home = () => {
                                 ))
                             ) : (
                                 <>
-                                    <p className="slide-up delay-2">A team of <strong>sharing a common value system</strong> and shared environment and resources.</p>
-                                    <p className="slide-up delay-2">We love our work and strive towards creating a beautiful living environment where people can work in joy.</p>
-                                    <p className="slide-up delay-3">We do this by listening. <strong>Listening hard and with sensibility</strong>.</p>
-                                    <p className="slide-up delay-3">We value our <strong>clients as the principal visionary and with our experience add value</strong> to evolve and evolved it. Vision that form the basis of our design.</p>
-                                    <p className="slide-up delay-3">We believe in a <strong>collaboration effort between all stakeholders</strong> client, architect, PMC and contractor to where each partakes in the joy of creation infusing the building with a positive energy ultimately benefitting the end users.</p>
-                                    <p className="slide-up delay-3">We are <strong>cutting edge looks</strong> like BIM, AI on a need basis Autocad, Sketchup to ensure <strong>seamless transition from concept to execution</strong>.</p>
+                                    <p className="slide-up delay-2">We are a team of passionate architects <strong> sharing a common value system </strong> , environment, and resources.</p>
+                                    <p className="slide-up delay-2">We love our work and strive towards <strong> creating a living environment where people can live and work with joy.</strong></p>
+                                    <p className="slide-up delay-3">We do this by listening. <strong> Listening hard and with sensitivity.</strong></p>
+                                    <p className="slide-up delay-3">We value our <strong> clients as "principle visionary," to which we add value</strong> with experience and expertise to evolve a cohesive vision which informs and drives our design solution.</p>
+                                    <p className="slide-up delay-3">We treat all stakeholders clients, architects, PMC, and contractors as collaborators, participating in the joy of creation, thus infusing the built space e with with positiv positive energy.</p>
+                                    <p className="slide-up delay-3">We use<strong> cutting-edge software like BIM, Al,</strong> and need-based AutoCAD and SketchUp to ensure a <strong> seamless transition from concept to execution.</strong></p>
                                 </>
                             )}
                         </div>
@@ -249,7 +261,7 @@ const Home = () => {
                 </div>
             </section>
 
-           
+
 
             {/* Minimal Footer */}
             <footer className="footer" style={{ padding: '4rem 2rem', textAlign: 'center', background: '#0a0a0a', color: 'white' }}>

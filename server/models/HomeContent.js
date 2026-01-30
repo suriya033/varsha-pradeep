@@ -9,6 +9,14 @@ const homeContentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    authorNative: {
+        type: String,
+        required: false,
+    },
+    authorStudy: {
+        type: String,
+        required: false,
+    },
     image: {
         type: String, // URL or Base64
         required: true,

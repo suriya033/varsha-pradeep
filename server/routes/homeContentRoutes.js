@@ -26,6 +26,8 @@ router.post('/', async (req, res) => {
         const content = new HomeContent({
             description: req.body.description,
             author: req.body.author,
+            authorNative: req.body.authorNative,
+            authorStudy: req.body.authorStudy,
             image: req.body.image
         });
 
@@ -45,6 +47,8 @@ router.put('/:id', async (req, res) => {
 
         content.description = req.body.description || content.description;
         content.author = req.body.author || content.author;
+        content.authorNative = req.body.authorNative || content.authorNative;
+        content.authorStudy = req.body.authorStudy || content.authorStudy;
         content.image = req.body.image || content.image;
 
         const updatedContent = await content.save();

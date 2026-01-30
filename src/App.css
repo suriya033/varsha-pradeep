@@ -348,9 +348,11 @@ body {
   z-index: 10;
 }
 
-.about-card p {
+.about-card p,
+.about-card .ql-editor,
+.about-card .ql-editor * {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #ffffff;
   line-height: 1.5;
   margin-bottom: 0.5rem;
 }
@@ -401,7 +403,7 @@ body {
 
 .about-image {
   position: relative;
-  width:400px;
+  width: 400px;
   height: 400px;
   overflow: hidden;
   left: 15%;
@@ -435,13 +437,13 @@ body {
 
 .about-description {
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.5;
   color: #444;
 }
 
 .about-description p {
   margin-bottom: 1rem;
- 
+
 }
 
 .about-description strong {
