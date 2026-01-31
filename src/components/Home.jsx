@@ -248,12 +248,12 @@ const Home = () => {
                                 ))
                             ) : (
                                 <>
-                                    <p className="slide-up delay-2">We are a team of passionate architects <strong> sharing a common value system </strong> , environment, and resources.</p>
+                                    <p className="slide-up delay-2">We are a team of <strong> passionate architects sharing a common value system </strong> , environment, and resources.</p>
                                     <p className="slide-up delay-2">We love our work and strive towards <strong> creating a living environment where people can live and work with joy.</strong></p>
-                                    <p className="slide-up delay-3">We do this by listening. <strong> Listening hard and with sensitivity.</strong></p>
-                                    <p className="slide-up delay-3">We value our <strong> clients as "principle visionary," to which we add value</strong> with experience and expertise to evolve a cohesive vision which informs and drives our design solution.</p>
-                                    <p className="slide-up delay-3">We treat all stakeholders clients, architects, PMC, and contractors as collaborators, participating in the joy of creation, thus infusing the built space e with with positiv positive energy.</p>
-                                    <p className="slide-up delay-3">We use<strong> cutting-edge software like BIM, Al,</strong> and need-based AutoCAD and SketchUp to ensure a <strong> seamless transition from concept to execution.</strong></p>
+                                    <p className="slide-up delay-3">We do this by  <strong> Listening. Listening hard and with sensitivity.</strong></p>
+                                    <p className="slide-up delay-3">We value our <strong> clients as "principle visionary," to which we ADD VALUE</strong> with experience and expertise to evolve a cohesive vision which informs and drives our design solution.</p>
+                                    <p className="slide-up delay-3">We treat all stakeholders clients, architects, PMC, and contractors as collaborators, participating in the joy of creation, thus<strong> infusing the built space with positive energy</strong>.</p>
+                                    <p className="slide-up delay-3">We use<strong> cutting-edge software like Navisworks, sketch tools for BIM and AI</strong> to ensure a<strong> seamless transition from concept to execution.</strong></p>
                                 </>
                             )}
                         </div>
